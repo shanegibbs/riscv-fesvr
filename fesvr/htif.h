@@ -20,6 +20,11 @@ class htif_t : public chunked_memif_t
   virtual void start();
   virtual void stop();
 
+  void run_pre();
+  void run_step();
+  bool run_running();
+  int run_post();
+
   int run();
   bool done();
   int exit_code();
@@ -67,6 +72,9 @@ class htif_t : public chunked_memif_t
   std::vector<device_t*> dynamic_devices;
 
   const std::vector<std::string>& target_args() { return targs; }
+
+  std::queue<reg_t> fromhost_queue;
+  std::function<void(reg_t)> fromhost_callback;
 
   friend class memif_t;
   friend class syscall_t;
